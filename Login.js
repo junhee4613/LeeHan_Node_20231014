@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const app = express();
-const WebSocket = require('ws');
 require('dotenv').config();  
 
 const mysql = require('mysql');
@@ -49,7 +48,7 @@ app.post('/LeeHan/login', (req, res) => {
     
     });
     const { id, password } = req.body;
-    connection.query('SELECT id, password FROM leehan_account WHERE id = ?', [id], (err, results, fields) => {
+    connection.query('SELECT id, password, name FROM leehan_account WHERE id = ?', [id], (err, results, fields) => {
         if (err) {
             console.log(err);
             return res.status(500).json({ message: '서버 오류' });
@@ -139,7 +138,7 @@ app.post('/LeeHan/sign_up', (req, res) => {
 const WebSocket = require('ws');
 var CREATE = require('./create.js');    //방이 만들어졌을 때 호출하는 클래스
 
-const wss = new WebSocket.Server({port:PORT}, () =>{            //소캣을 포트 8000번에 시작 시킨다.
+const wss = new WebSocket.Server({port:8000}, () =>{            //소캣을 포트 8000번에 시작 시킨다.
     console.log('서버 시작');
 });
 
@@ -149,7 +148,7 @@ let rooms = {};         //룸 배열
 let joinuserTemp = 1;   //유저 구분 인자
 
 wss.on('connection', function connections(ws){                  //커넥션이 됐을 때
-    ws.clientID = ////////////////////////durl dkdlel
+    userList = ws.clientID;
     
     var create = new CREATE();
 

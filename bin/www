@@ -61,7 +61,7 @@ app.post('/LeeHan/login', (req, res) => {
         
             if (dataArray.password !== password){
                 console.log('비번');
-                return res.status(403).json({ message: '비밀번호가 일치하지 않습니다.' });
+                return res.status(401).json({ message: '비밀번호가 일치하지 않습니다.' });
             }
             else{
                 const token = jwt.sign({ dataArray }, secretkey, { expiresIn: '1h' });
