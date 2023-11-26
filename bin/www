@@ -138,6 +138,7 @@ app.post('/LeeHan/login', (req, res) => {
             console.log(dataArray.password);
             console.log(dataArray + '계정 정보');
             console.log(id + ':' + player_name + '계정 정보'); 
+            console.log(dataArray.player_name);
             const dataArray = results[0];
             if (dataArray.password !== password){
                 console.log('비번');
