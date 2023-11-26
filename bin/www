@@ -146,9 +146,11 @@ app.post('/LeeHan/login', (req, res) => {
             }
             else{
                 if(!dataArray.player_name){
+                    console.log('true보냄');
                     return res.status(401).json({ name_is_null: true });
                 }
                 else{
+                    console.log('계정정보보냄')
                     const token = jwt.sign({ dataArray }, secretkey, { expiresIn: '1h' });
                     res.status(200).json({ token, id: id, player_name: results[0].player_name});
                 }
