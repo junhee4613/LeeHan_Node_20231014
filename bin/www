@@ -133,13 +133,13 @@ app.post('/LeeHan/login', (req, res) => {
             return res.status(500).json({ message: '서버 오류' });
         }
         if(results[0] !== undefined){
+            const dataArray = results[0];
             console.log(results);   //[]
             console.log(results[0].player_name);//undefined
             console.log(dataArray.password);
             console.log(dataArray + '계정 정보');
             console.log(id + ':' + player_name + '계정 정보'); 
             console.log(dataArray.player_name);
-            const dataArray = results[0];
             if (dataArray.password !== password){
                 console.log('비번');
                 return res.status(401).json({ message: '비밀번호가 일치하지 않습니다.' });
