@@ -94,7 +94,7 @@ app.post('/LeeHan/name_decide', (req, res) =>{
         else{
             const dataArray = {id ,player_name };
             console.log(dataArray);
-            return res.status(200).json(dataArray);
+            return res.status(200).json({id: id, player_name: player_name});
             };
         });
     connection.end((err) => {
@@ -149,7 +149,7 @@ app.post('/LeeHan/login', (req, res) => {
                 }
                 else{
                     const token = jwt.sign({ dataArray }, secretkey, { expiresIn: '1h' });
-                    res.status(200).json({ token, results});
+                    res.status(200).json({ token, id: id, player_name: player_name});
                 }
                 
             }
