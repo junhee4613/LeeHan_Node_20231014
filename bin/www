@@ -105,6 +105,7 @@ app.post('/LeeHan/name_decide', (req, res) =>{
             });
         }
     });
+    
     connection.end((err) => {
         if(err){
             console.error('MYSQL 연결 종료 오류 : ' + err.stack);
@@ -152,8 +153,11 @@ app.post('/LeeHan/login', (req, res) => {
                 if(!dataArray.player_name){
                     return res.status(401).json({ name_is_null: true });
                 }
-                const token = jwt.sign({ dataArray }, secretkey, { expiresIn: '1h' });
-                res.status(200).json({ token });
+                else{
+                    const token = jwt.sign({ dataArray }, secretkey, { expiresIn: '1h' });
+                    res.status(200).json({ token, dataArray});
+                }
+                
             }
             connection.end((err) => {
                 if (err) {
