@@ -97,8 +97,6 @@ app.post('/LeeHan/name_decide', (req, res) =>{
             return res.status(200).json(dataArray);
             };
         });
-    });
-    
     connection.end((err) => {
         if(err){
             console.error('MYSQL 연결 종료 오류 : ' + err.stack);
@@ -106,8 +104,10 @@ app.post('/LeeHan/name_decide', (req, res) =>{
         }
         console.log('MySQL 연결이 성공적으로 종료되었습니다.');
     });
+    
 });
-
+    
+    
 app.post('/LeeHan/login', (req, res) => {
     const connection = mysql.createConnection({
         host: process.env.DB_HOST,
