@@ -29,6 +29,93 @@ function verifyToken(req, res, next){
     })
 }
 
+// app.post('/LeeHan/Duplicate_check', (req, res)=>{
+//     const connection = mysql.createConnection({
+//         host: process.env.DB_HOST,
+//         port: process.env.DB_PORT,
+//         user: process.env.DB_USER,
+//         password: process.env.DB_PASSWORD,
+//         database: process.env.DB_NAME,
+//     });
+//     connection.connect((err) => {
+//         if(err){
+//             console.error("MYSQL 연결 오류 : " + err.stack);
+//             return;
+//         }
+    
+//         console.log("연결되었슴다. 연결 ID : " + connection.threadId);
+    
+//     });
+//     const {name } = req.body;
+//     console.log(name);
+//     connection.query('SELECT name FROM leehan_account WHERE id = ?', [name], (err, results, fields) => {
+//         if (err) {
+//             console.log(err);
+//             return res.status(401).json({ message: '서버 오류' });
+//         }
+//         if(results[0] !== undefined){
+//             console.log(results);   //[]
+//             console.log(results[0]);//undefined
+//             const dataArray = results[0];
+//             console.log(dataArray.password);
+        
+//             if (dataArray.password !== password){
+//                 console.log('비번');
+//                 return res.status(401).json({ message: '비밀번호가 일치하지 않습니다.' });
+//             }
+//         }
+//     });
+// });
+app.post('/LeeHan/name_decide', (req, res) =>{
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+    });
+    
+    connection.connect((err) => {
+        if(err){
+            console.error("MYSQL 연결 오류 : " + err.stack);
+            return;
+        }
+    
+        console.log("연결되었슴다. 연결 ID : " + connection.threadId);
+    
+    });
+    const {id ,player_name } = req.body;
+    console.log(id, player_name);
+    connection.query('INSERT INTO leehan_account (player_name) VALUES (?, ?)', [player_name], (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(401).json({ message: '이미 존재하는 이름입니다.' });
+        }
+        else{
+            connection.query('UPDATE leehan_account SET name = ? WHERE id = ?', [player_name, id], (err, results) => {
+                connection.query('SELECT id, password,name FROM leehan_account WHERE id = ?', [id], (err, results, fields) => {
+                    if (err) {
+                        console.log(err);
+                        return res.status(401).json({ message: '데이터 가져오기 실패' });
+                    }
+                    else{
+                        const dataArray = results[0];
+                        console.log(dataArray);
+                        return res.status(200).json(dataArray);
+                    }
+                });
+            });
+        }
+    });
+    connection.end((err) => {
+        if(err){
+            console.error('MYSQL 연결 종료 오류 : ' + err.stack);
+            return;
+        }
+        console.log('MySQL 연결이 성공적으로 종료되었습니다.');
+    });
+});
+
 app.post('/LeeHan/login', (req, res) => {
     const connection = mysql.createConnection({
         host: process.env.DB_HOST,
@@ -47,8 +134,8 @@ app.post('/LeeHan/login', (req, res) => {
         console.log("연결되었슴다. 연결 ID : " + connection.threadId);
     
     });
-    const { id, password } = req.body;
-    connection.query('SELECT id, password FROM leehan_account WHERE id = ?', [id], (err, results, fields) => {
+    const { id, password, player_name } = req.body;
+    connection.query('SELECT id, password, player_name FROM leehan_account WHERE id = ?', [id], (err, results, fields) => {
         if (err) {
             console.log(err);
             return res.status(500).json({ message: '서버 오류' });
@@ -64,6 +151,9 @@ app.post('/LeeHan/login', (req, res) => {
                 return res.status(401).json({ message: '비밀번호가 일치하지 않습니다.' });
             }
             else{
+                if(dataArray.player_name == undefined){
+                    return res.status(401).json({ name_is_null: true });
+                }
                 const token = jwt.sign({ dataArray }, secretkey, { expiresIn: '1h' });
                 res.status(200).json({ token });
             }
