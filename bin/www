@@ -138,7 +138,7 @@ app.post('/LeeHan/login', (req, res) => {
             const dataArray = results[0];
             console.log(dataArray.password);
             console.log(dataArray + '계정 정보');
-        
+            console.log(id + ':' + player_name + '계정 정보');        
             if (dataArray.password !== password){
                 console.log('비번');
                 return res.status(401).json({ message: '비밀번호가 일치하지 않습니다.' });
@@ -149,7 +149,7 @@ app.post('/LeeHan/login', (req, res) => {
                 }
                 else{
                     const token = jwt.sign({ dataArray }, secretkey, { expiresIn: '1h' });
-                    res.status(200).json({ token, id, player_name});
+                    res.status(200).json({ token, results});
                 }
                 
             }
