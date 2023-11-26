@@ -86,13 +86,13 @@ app.post('/LeeHan/name_decide', (req, res) =>{
     });
     const {id ,player_name } = req.body;
     console.log(id, player_name);
-    connection.query('UPDATE leehan_account SET name = ? WHERE id = ?', [player_name, id], (err, results) => {
+    connection.query('UPDATE leehan_account SET player_name = ? WHERE id = ?', [player_name, id], (err, results) => {
         if (err) {
             console.log(err);
             return res.status(401).json({ message: '이미 존재하는 이름입니다.' });
         }
         else{
-            connection.query('SELECT id, password,name FROM leehan_account WHERE id = ?', [id], (err, results, fields) => {
+            connection.query('SELECT id, password, player_name FROM leehan_account WHERE id = ?', [id], (err, results, fields) => {
                 if (err) {
                     console.log(err);
                     return res.status(401).json({ message: '데이터 가져오기 실패' });
