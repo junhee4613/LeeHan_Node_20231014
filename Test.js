@@ -32,6 +32,44 @@ function verifyToken(req, res, next){
         next();
     })
 }
+
+// app.post('/LeeHan/Duplicate_check', (req, res)=>{
+//     const connection = mysql.createConnection({
+//         host: process.env.DB_HOST,
+//         port: process.env.DB_PORT,
+//         user: process.env.DB_USER,
+//         password: process.env.DB_PASSWORD,
+//         database: process.env.DB_NAME,
+//     });
+//     connection.connect((err) => {
+//         if(err){
+//             console.error("MYSQL 연결 오류 : " + err.stack);
+//             return;
+//         }
+    
+//         console.log("연결되었슴다. 연결 ID : " + connection.threadId);
+    
+//     });
+//     const {name } = req.body;
+//     console.log(name);
+//     connection.query('SELECT name FROM leehan_account WHERE id = ?', [name], (err, results, fields) => {
+//         if (err) {
+//             console.log(err);
+//             return res.status(401).json({ message: '서버 오류' });
+//         }
+//         if(results[0] !== undefined){
+//             console.log(results);   //[]
+//             console.log(results[0]);//undefined
+//             const dataArray = results[0];
+//             console.log(dataArray.password);
+        
+//             if (dataArray.password !== password){
+//                 console.log('비번');
+//                 return res.status(401).json({ message: '비밀번호가 일치하지 않습니다.' });
+//             }
+//         }
+//     });
+// });
 app.post('/LeeHan/name_decide', (req, res) =>{
     const connection = mysql.createConnection({
         host: process.env.DB_HOST,
@@ -343,7 +381,7 @@ function leaveRoom(params)  //룸을 나갈경우
 
 
 wss.on('listening', () =>{
-    console.log('웹소켓 리스닝....');
+    console.log('리스닝....');
 });
 
 function genkey(length){
