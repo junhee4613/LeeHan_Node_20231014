@@ -238,6 +238,7 @@ let rooms = {};         //룸 배열
 let joinuserTemp = 1;   //유저 구분 인자
 
 wss.on('connection', function connections(ws){                  //커넥션이 됐을 때
+    console.log('웹소켓 연결')
     ws.clientID = genkey(8);
 
     //var create = new CREATE();
@@ -276,7 +277,6 @@ wss.on('connection', function connections(ws){                  //커넥션이 �
 
             
     });
-
     ws.on('close', ()=>{
         const index = userList.indexOf(ws.clientID);
         if(index !== -1){
