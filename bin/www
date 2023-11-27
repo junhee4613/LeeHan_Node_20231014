@@ -2,14 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const app = express();
-require('dotenv').config();  
-const http = require('http');
 const server = http.createServer(app);
-const WebSocket = require('ws');
-const wss = new WebSocket.Server({ server }, () =>{            
-    console.log('서버 시작');
-});
-
+const wss = new WebSocket.Server({ server });
+require('dotenv').config();  
 
 const mysql = require('mysql');
 
@@ -188,9 +183,8 @@ app.get('/LeeHan/protected', verifyToken, (req, res) =>{
 
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT , ()=>{
-    console.log(PORT);
-    console.log('server is running on port 3000');
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
 
 app.post('/LeeHan/sign_up', (req, res) => {
@@ -229,11 +223,12 @@ app.post('/LeeHan/sign_up', (req, res) => {
         console.log('MySQL 연결이 성공적으로 종료되었습니다.');
     });
 });
+const WebSocket = require('ws');
 //var CREATE = require('./create.js');    //방이 만들어졌을 때 호출하는 클래스
 
-//const wss = new WebSocket.Server({port:3000}, () =>{            //소캣을 포트 8000번에 시작 시킨다.
-//    console.log('서버 시작');
-//});
+// const wss = new WebSocket.Server({port:3000}, () =>{            //소캣을 포트 8000번에 시작 시킨다.
+//     console.log('서버 시작');
+// });
 
 const userList = [];
 const maxClients = 5; //최대 접속 인원수
