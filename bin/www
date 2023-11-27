@@ -225,7 +225,7 @@ app.post('/LeeHan/sign_up', (req, res) => {
 const WebSocket = require('ws');
 //var CREATE = require('./create.js');    //방이 만들어졌을 때 호출하는 클래스
 
-const wss = new WebSocket.Server({port:8000}, () =>{            //소캣을 포트 8000번에 시작 시킨다.
+const wss = new WebSocket.Server({port:3000}, () =>{            //소캣을 포트 8000번에 시작 시킨다.
     console.log('서버 시작');
 });
 
