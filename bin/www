@@ -1,5 +1,6 @@
 const http = require('http');
 const express = require('express');
+const WebSocket = require('ws');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const app = express();
