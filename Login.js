@@ -7,7 +7,7 @@ require('dotenv').config();
 const mysql = require('mysql');
 
 
-//npm해야될거 , init -y, install express, install package.json, i jsonwebtoken
+//npm해야될거 , init -y, install express, install package.json, i jsonwebtoken, 모듈 업데이트는 npm update
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 
