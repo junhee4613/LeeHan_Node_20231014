@@ -7,7 +7,6 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 require('dotenv').config();  
-
 const mysql = require('mysql');
 
 
@@ -120,7 +119,6 @@ app.post('/LeeHan/login', (req, res) => {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
     });
-    
     connection.connect((err) => {
         if(err){
             console.error("MYSQL 연결 오류 : " + err.stack);
@@ -380,9 +378,9 @@ function leaveRoom(params)  //룸을 나갈경우
 }
 
 
-wss.on('listening', () =>{
-    console.log('리스닝....');
-});
+// wss.on('listening', () =>{
+//     console.log('리스닝....');
+// });
 
 function genkey(length){
     let result = '';
