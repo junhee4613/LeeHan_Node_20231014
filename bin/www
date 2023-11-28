@@ -144,7 +144,7 @@ app.post('/LeeHan/login', (req, res) => {
             }
             else{
                 console.log('로그인은 성공함');
-                connection.query('SELECT id FROM leehan_account_name WHERE id = ?', [id], (err, results, fields) =>{
+                connection.query('SELECT id, player_name FROM leehan_account_name WHERE id = ?', [id], (err, results, fields) =>{
                     const token = jwt.sign({ dataArray }, secretkey, { expiresIn: '1h' });
                      res.status(200).json({ token, id: id, player_name: results[0].player_name});
                 });
@@ -274,8 +274,6 @@ wss.on('connection', function connections(ws){                  //커넥션이 �
                 client.send(data);//받은 데이터를 모든 클라이언트에게 전송
             });
         }
-
-            
     });
     ws.on('close', ()=>{
         const index = userList.indexOf(ws.clientID);
