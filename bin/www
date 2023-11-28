@@ -89,28 +89,9 @@ app.post('/LeeHan/name_decide', (req, res) =>{
     });
     const {id ,player_name } = req.body;
     console.log(id, player_name);
-    // connection.query('SELECT player_name FROM leehan_account WHERE player_name = ?', [player_name], (err, results, fields) => {
-    //     if (err) {
-    //         connection.query('UPDATE leehan_account SET player_name = ? WHERE id = ?', [player_name, id], (err, results) => {
-    //             if (err) {
-    //                 console.log(err);
-    //                 return res.status(401).json({ message: '이미 존재하는 이름입니다.' });
-    //             }
-    //             else{
-    //                 const dataArray = {id ,player_name };
-    //                 console.log(dataArray);
-    //                 return res.status(200).json({id: id, player_name: player_name});
-    //                 };
-    //             });
-    //     }
-    //     else{
-    //         return res.status(200).json({ message: '이미 존재하는 닉네임입니다.' });
-    //     }
-    // });
-    connection.query('UPDATE leehan_account SET player_name = ? WHERE id = ?', [player_name, id], (err, results) => {
+    
+    connection.query('UPDATE leehan_account_name SET player_name = ? WHERE id = ?', [player_name, id], (err, results) => {
         if (err) {
-            console.log(err);
-            console.log('존재함');
             return res.status(401).json({ message: '이미 존재하는 이름입니다.' });
         }
         else{
@@ -148,8 +129,8 @@ app.post('/LeeHan/login', (req, res) => {
         console.log("연결되었슴다. 연결 ID : " + connection.threadId);
     
     });
-    const { id, password, player_name } = req.body;
-    connection.query('SELECT id, password, player_name FROM leehan_account WHERE id = ?', [id], (err, results, fields) => {
+    const { id, password } = req.body;
+    connection.query('SELECT id, password FROM leehan_account WHERE id = ?', [id], (err, results, fields) => {
         if (err) {
             console.log(err);
             return res.status(500).json({ message: '서버 오류' });
@@ -162,15 +143,20 @@ app.post('/LeeHan/login', (req, res) => {
                 return res.status(401).json({ message: '비밀번호가 일치하지 않습니다.' });
             }
             else{
-                if(!dataArray.player_name){
-                    console.log('true보냄');
-                    return res.status(401).json({ name_is_null: true });
-                }
-                else{
-                    console.log('계정정보보냄')
+                connection.query('SELECT id FROM leehan_account_name WHERE id = ?', [id], (err, results, fields) =>{
                     const token = jwt.sign({ dataArray }, secretkey, { expiresIn: '1h' });
-                    res.status(200).json({ token, id: id, player_name: results[0].player_name});
-                }
+                     res.status(200).json({ token, id: id, player_name: results[0].player_name});
+                });
+                     
+                // if(!dataArray.player_name){
+                //     console.log('true보냄');
+                //     return res.status(401).json({ name_is_null: true });
+                // }
+                // else{
+                //     console.log('계정정보보냄')
+                //     const token = jwt.sign({ dataArray }, secretkey, { expiresIn: '1h' });
+                //     res.status(200).json({ token, id: id, player_name: results[0].player_name});
+                // }
                 
             }
             connection.end((err) => {
@@ -227,7 +213,7 @@ app.post('/LeeHan/sign_up', (req, res) => {
             console.log(err);
             return res.status(500).json({ message: '이미 존재하는 계정입니다.' });
         }
-        res.status(200).json({ message: '회원가입에 성공하였습니다.' });
+        res.status(200).json({ message: '회원가입에 성공하였습니다.', name_is_null: true });
     });
 
     connection.end((err) => {
