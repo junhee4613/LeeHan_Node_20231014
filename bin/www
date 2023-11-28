@@ -90,7 +90,7 @@ app.post('/LeeHan/name_decide', (req, res) =>{
     const {id ,player_name } = req.body;
     console.log(id, player_name);
     
-    connection.query('UPDATE leehan_account_name SET player_name = ? WHERE id = ?', [player_name, id], (err, results) => {
+    connection.query('INSERT INTO leehan_account_name (id, player_name) VALUES (?, ?)', [id, player_name], (err, results) => {
         if (err) {
             return res.status(401).json({ message: '이미 존재하는 이름입니다.' });
         }
