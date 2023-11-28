@@ -167,7 +167,7 @@ app.post('/LeeHan/sign_up', (req, res) => {
     });
 });
 const WebSocket = require('ws');
-//var CREATE = require('./create.js');    //방이 만들어졌을 때 호출하는 클래스
+var CREATE = require('./create.js');    //방이 만들어졌을 때 호출하는 클래스
 
 const wss = new WebSocket.Server({port:8000}, () =>{            //소캣을 포트 8000번에 시작 시킨다.
     console.log('서버 시작');
@@ -181,7 +181,7 @@ let joinuserTemp = 1;   //유저 구분 인자
 wss.on('connection', function connections(ws){                  //커넥션이 됐을 때
     ws.clientID = genkey(8);
 
-    //var create = new CREATE();
+    var create = new CREATE();
 
     ws.on('message', (data) =>{
         const jsonData = JSON.parse(data);
@@ -197,7 +197,7 @@ wss.on('connection', function connections(ws){                  //커넥션이 �
 
         if(requestType == 100)       //방생성
         {       
-            //create.createRoom(params, rooms, ws);
+            create.createRoom(params, rooms, ws);
         }
         if(requestType == 200)       //방입장
         {       
