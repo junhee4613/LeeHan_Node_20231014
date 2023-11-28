@@ -119,6 +119,7 @@ app.post('/LeeHan/login', (req, res) => {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
     });
+    console.log(wss.address().address + ':' + wss.address().port + ' 주소');
     connection.connect((err) => {
         if(err){
             console.error("MYSQL 연결 오류 : " + err.stack);
@@ -136,12 +137,7 @@ app.post('/LeeHan/login', (req, res) => {
         }
         if(results[0] !== undefined){
             const dataArray = results[0];
-            console.log(results);   //[]
-            console.log(results[0].player_name);//undefined
-            console.log(dataArray.password);
-            console.log(dataArray + '계정 정보');
-            console.log(id + ':' + player_name + '계정 정보'); 
-            console.log(dataArray.player_name);
+            
             if (dataArray.password !== password){
                 console.log('비번');
                 return res.status(401).json({ message: '비밀번호가 일치하지 않습니다.' });
