@@ -109,7 +109,35 @@ app.post('/LeeHan/name_decide', (req, res) =>{
     });
     
 });
+app.post('/LeeHan/maximum_record', (req, res) => {
+    const connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+    });
+    console.log(wss.address().address + ':' + wss.address().port + ' 주소');
+    connection.connect((err) => {
+        if(err){
+            console.error("MYSQL 연결 오류 : " + err.stack);
+            return;
+        }
     
+        console.log("연결되었슴다. 연결 ID : " + connection.threadId);
+    
+    });
+    const { player_name, maximum_record } = req.body;
+    connection.query('UPDATE leehan_account SET player_name = ?, maximum_record = ? WHERE index = ?', [player_name, maximum_record, 1], (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(401).json({ message: '업데이트 오류.' });
+        }
+        else{
+            return res.status(200).json({player_name : results[0].player_name, maximum_record : results[0].maximum_record});
+        }
+    });
+});
     
 app.post('/LeeHan/login', (req, res) => {
     const connection = mysql.createConnection({
