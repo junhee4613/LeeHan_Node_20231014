@@ -89,9 +89,28 @@ app.post('/LeeHan/name_decide', (req, res) =>{
     });
     const {id ,player_name } = req.body;
     console.log(id, player_name);
+    // connection.query('SELECT player_name FROM leehan_account WHERE player_name = ?', [player_name], (err, results, fields) => {
+    //     if (err) {
+    //         connection.query('UPDATE leehan_account SET player_name = ? WHERE id = ?', [player_name, id], (err, results) => {
+    //             if (err) {
+    //                 console.log(err);
+    //                 return res.status(401).json({ message: '이미 존재하는 이름입니다.' });
+    //             }
+    //             else{
+    //                 const dataArray = {id ,player_name };
+    //                 console.log(dataArray);
+    //                 return res.status(200).json({id: id, player_name: player_name});
+    //                 };
+    //             });
+    //     }
+    //     else{
+    //         return res.status(200).json({ message: '이미 존재하는 닉네임입니다.' });
+    //     }
+    // });
     connection.query('UPDATE leehan_account SET player_name = ? WHERE id = ?', [player_name, id], (err, results) => {
         if (err) {
             console.log(err);
+            console.log('존재함');
             return res.status(401).json({ message: '이미 존재하는 이름입니다.' });
         }
         else{
